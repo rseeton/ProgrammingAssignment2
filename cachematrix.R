@@ -25,23 +25,20 @@ makeCacheMatrix <- function(matrix_In = matrix()) {
 ##	set the value of the inverse of the matrix                               ##
 ##	get the value of the inverse of the matrix                               ##
 ##                                                                           ##
-## Some useful notes on basic Matrix operations here:                        ##
-##		http://www.johnmyleswhite.com/notebook/2009/12/16/quick-review-of-matrix-algebra-in-r/  ##
-##                                                                           ##
 ###############################################################################
 
 	m <- NULL
 	
-	matrix_Set <- function(y) {							#Creates setter function (Not required but good practice)
+	matrix_Set <- function(y) {          #Creates setter function (Not required but good practice)
 		matrix_In <<- y
 		m <<- NULL
 	}
 		
-	matrix_Get <- function() matrix_In					#Creates function to return the source matrix provided
+	matrix_Get <- function() matrix_In   #Creates function to return the source matrix provided
 	
 	matrix_Inverse_Set <- function(solve) m <<- solve	#Create function to calculate the inverse of the source matrix
 	
-	matrix_Inverse_Get <- function() m					#Creates function to return the inverse of the source matrix
+	matrix_Inverse_Get <- function() m   #Creates function to return the inverse of the source matrix
 	
 	list(matrix_Set = matrix_Set, 						
 		 matrix_Get = matrix_Get,
