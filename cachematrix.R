@@ -1,18 +1,18 @@
 ###################################################################################
 ## Richard Seeton (richard@seeton.net)                                           ##
-## 2015-01-23                                                                    ##
+## 2021-02-03                                                                    ##
 ###################################################################################
 ##                                                                               ##
 ## R Programming - Programming Assignment #2                                     ##
 ## Write  a pair of functions that cache the inverse of a matrix.                ##
 ##                                                                               ##
-##	makeCacheMatrix: This function creates a special "matrix" object         ##
+##	makeCacheMatrix: This function creates a special "matrix" object             ##
 ##                   that can cache its inverse.                                 ##
-##	cacheSolve:  This function computes the inverse of the special "matrix"  ##
-##	             returned by makeCacheMatrix above. If the inverse has       ##
-##	             already been calculated (and the matrix has not changed),   ##
-##	             then the cachesolve should retrieve the inverse from the    ##
-##	             cache.                                                      ##  
+##	cacheSolve:      This function computes the inverse of the special "matrix"  ##
+##	                 returned by makeCacheMatrix above. If the inverse has       ##
+##	                 already been calculated (and the matrix has not changed),   ##
+##	                 then the cachesolve should retrieve the inverse from the    ##
+##	                 cache.                                                      ##  
 ###################################################################################
 
 makeCacheMatrix <- function(matrix_In = matrix()) {
@@ -21,29 +21,29 @@ makeCacheMatrix <- function(matrix_In = matrix()) {
 ## makeCacheMatrix takes a matrix object (Matrix_In) as an arguement and         ##
 ## returns a list containing 4 functions                                         ##
 ##                                                                               ##	
-##      set the value of the matrix                                              ##
-##      get the value of the matrix                                              ##
-##      set the value of the inverse of the matrix                               ##
-##      get the value of the inverse of the matrix                               ##
+##      matrix_Set  - assign the value of the original matrix                    ##
+##      matrix_Get  - retrieve the value of the original matrix                  ##
+##      matrix_Inverse_Set - assign the value of the inverse of the matrix       ##
+##      matrix_Inverse_Set - retrieve the value of the inverse of the matrix     ##
 ##                                                                               ##
 ###################################################################################
 
-	m <- NULL
+	matrix_Inverse <- NULL
 	
 	#Creates setter function (Not required but good practice)
 	matrix_Set <- function(y) {
 		matrix_In <<- y
-		m <<- NULL
+		matrix_Inverse <<- NULL
+		message("set Original matrix, clear Inverse matrix cached data")
 	}
 	
 	#Creates function to return the source matrix provided
 	matrix_Get <- function() matrix_In   
 	
 	#Create function to calculate the inverse of the source matrix
-	matrix_Inverse_Set <- function(solve) m <<- solve
-	
+	matrix_Inverse_Set <- function(solve) {matrix_Inverse <<- solve}
 	#Creates function to return the inverse of the source matrix
-	matrix_Inverse_Get <- function() m
+	matrix_Inverse_Get <- function() {matrix_Inverse}
 	
 	#Assembles the functions in a list
 	list(matrix_Set = matrix_Set, 						
@@ -67,18 +67,21 @@ cacheSolve <- function(list_CacheMatrix, ...) {
 ###############################################################################
 
  	# Get the object currently stored in the slot for the Inverted Matrix
-	m <- list_CacheMatrix$matrix_Inverse_Get()
+	matrix_Inverse <- list_CacheMatrix$matrix_Inverse_Get()
 	
 	# Return the object retrieved from the Inverted Matrix slot, if it exists
-	if(!is.null(m)) {
+	if(!is.null(matrix_Inverse)) {
 		message("getting cached data")
-		return(m)  #This sends us back to the calling frame
+		return(matrix_Inverse)  #This sends us back to the calling frame
+	}
+	else {
+	  # message("no cached data available")
 	}
   
-  	# Get the supplied matrix, 'solve' it, save it to the Inverted Matrix slot 
-  	# and return the saved result
-	data <- list_CacheMatrix$matrix_Get()
-	m <- solve(data, ...)
-	list_CacheMatrix$matrix_Inverse_Set(m)
-	return(m)
+  # Get the supplied matrix, 'solve' it, save it to the Inverted Matrix slot 
+  # and return the saved result
+	matrix_Original <- list_CacheMatrix$matrix_Get()
+	matrix_Inverse  <- solve(matrix_Original, ...)
+	list_CacheMatrix$matrix_Inverse_Set(matrix_Inverse)
+	return(matrix_Inverse)
 }
